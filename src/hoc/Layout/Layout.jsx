@@ -6,10 +6,8 @@ const Layout = ({ children }) => {
       <div className="Layout">
         <header className="Layout-header">
           <img src={logo} className="Layout-logo" alt="logo" />
-          <p>
-            Welcome to Create React App with React Router v6 and SSR
-          </p>
-					{children}
+          <p>Welcome to Create React App with React Router v6 and SSR</p>
+          {children}
           <a
             className="Layout-link"
             href="https://reactjs.org"
