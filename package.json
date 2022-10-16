@@ -1,21 +1,29 @@
 {
   "name": "cra-ssr",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.0"
+    "react-router-dom": "^6.4.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "dev": "cross-env PORT=8081 react-scripts start",
+    "dev:ssr": "npm-run-all --serial build:prepare:create-build-dir build:prepare:clear build:code:frontend dev:backend",
+    "dev:backend": "cross-env PORT=8080 webpack --config config-ssr/webpack.config.js --watch",
+    "build": "npm-run-all --serial build:prepare:* build:all",
+    "build:prepare:create-build-dir": "mkdirp build",
+    "build:prepare:clear": "cf build",
+    "build:prepare:move-configs": "copyfiles package.json yarn.lock build",
+    "build:all": "npm-run-all --parallel build:code:*",
+    "build:code:frontend": "cross-env BUILD_PATH='./build/client' react-scripts build",
+    "build:code:backend": "webpack --config config-ssr/webpack.config.js",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "prettify": "prettier --write ."
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +42,25 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.3",
+    "babel-loader": "^8.2.5",
+    "clean-webpack-plugin": "^4.0.0",
+    "clear-folder": "^3.2.1",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "mkdirp": "^1.0.4",
+    "nodemon-webpack-plugin": "^4.8.1",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1",
+    "react-scripts": "5.0.1",
+    "sass": "^1.55.0",
+    "sass-loader": "^13.1.0",
+    "url-loader": "^4.1.1",
+    "web-vitals": "^2.1.0",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-node-externals": "^3.0.0"
   }
 }
